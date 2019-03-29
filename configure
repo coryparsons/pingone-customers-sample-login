@@ -1,0 +1,72 @@
+#!/bin/bash
+THIS="$( basename "${0}" )"
+cd "$( dirname "${0}" )"
+
+################################################################################
+# Check for a .pingidentity directory with propertyfile
+################################################################################
+PROPS_FILE="${HOME}/.pingidentity/pingone-sample.properties"
+test -f "${PROPS_FILE}" && source "${PROPS_FILE}"
+
+
+################################################################################
+# Print usage information
+################################################################################
+function usage()
+{
+cat <<EO_USAGE
+
+Usage: ${THIS} [ configure ]
+
+Examples
+
+    ${THIS}
+
+EO_USAGE
+
+  exit
+}
+
+################################################################################
+# Allow the user to interactively provide configuraiton information to be 
+# set to .pingidentity/ldapsdk.properties file
+################################################################################
+function configure()
+{
+  echo "
+###############################################################################################
+#                                 ${THIS} Configuration
+###############################################################################################
+#
+# This will create properties in ${PROPS_FILE}
+# and they will be used as environment variables for scripts, .yamls, etc...
+#
+# To edit these in the future simply run: ./${THIS}
+# or edit the property file directory.
+###############################################################################################
+"
+  test -z "${PINGONE_ENVIRONMENT_ID}" && PINGONE_ENVIRONMENT_ID=""
+  test -z "${PINGONE_CLIENT_ID}"      && PINGONE_CLIENT_ID=""
+  test -z "${APP_BASE_URL}"           && PINGONE_CLIENT_ID=""
+
+  echo -n "Docker Container PINGONE_ENVIRONMENT_ID  local base [${PINGONE_ENVIRONMENT_ID}] ? "
+  read answer
+  ! test -z "${answer}" && PINGONE_ENVIRONMENT_ID="${answer}"
+
+  echo -n "Docker Container PINGONE_CLIENT_ID local base [${PINGONE_CLIENT_ID}] ? "
+  read answer
+  ! test -z "${answer}" && PINGONE_CLIENT_ID="${answer}"
+
+  echo -n "Docker Container APP_BASE_URL local base [${APP_BASE_URL}] ? "
+  read answer
+  ! test -z "${answer}" && APP_BASE_URL="${answer}"
+
+  ! test -z "${PINGONE_ENVIRONMENT_ID}" && echo "PINGONE_ENVIRONMENT_ID=${PINGONE_ENVIRONMENT_ID}" > ${PROPS_FILE}
+  ! test -z "${PINGONE_CLIENT_ID}" && echo "PINGONE_CLIENT_ID=${PINGONE_CLIENT_ID}" >> ${PROPS_FILE}
+  ! test -z "${APP_BASE_URL}" && echo "APP_BASE_URL=${APP_BASE_URL}" >> ${PROPS_FILE}
+
+  . ${PROPS_FILE}
+}
+
+configure
+

@@ -1,0 +1,16 @@
+docker run -d -p 8080:80 \
+	--env-file ~/.pingidentity/pingone-sample.properties \
+	--name pingonesample \
+        pingidentity/pingonesample
+
+docker logs pingonesample 
+
+echo "
+###############################################################################
+#
+# Open a terminal in container: docker exec -it pingonesample /bin/sh -c 'cd /usr/share/nginx/html; exec sh'
+#                   Watch logs: docker logs -f pingonesample
+#             Remove container: docker container rm -f pingonesample
+#
+###############################################################################
+"
