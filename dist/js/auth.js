@@ -1,8 +1,8 @@
 // variable definitions and building authorization url
 
-const environmentId = ''; // available on settings page of p14c admin console
-const clientId = ''; // available on connections tab of admin console
-const baseUrl = 'http://localhost/'; // URL of where you will host this application
+const environmentId = '6d2ed0a5-fa53-427a-87ba-abc9ab788ec8'; // available on settings page of p14c admin console
+const clientId = '7d04118f-d3eb-4490-a289-24d4722a54f7'; // available on connections tab of admin console
+const baseUrl = 'http://localhost:80/'; // URL of where you will host this application
 
 const scopes = 'openid profile'; // default scopes to request
 const responseType = 'token id_token';
